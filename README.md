@@ -21,10 +21,10 @@ include erlang.mk
 
 If you are using an `app.src` file, make sure that `reload_mk` is present in the `applications` list.
 
-Override your app in the release by adding the following line to your `relx.config`:
+Enable `dev_mode` in the release by adding the following line to your `relx.config`:
 
 ```erlang
-{overrides, [{myproject, "."}]}.
+{dev_mode, true}.
 ```
 
 Then in one terminal: `make run`.
