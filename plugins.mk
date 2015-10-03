@@ -15,9 +15,9 @@ reload: app
 	$(reload_verbose) $(RELX_OUTPUT_DIR)/$(RELX_RELEASE)/bin/$(RELX_RELEASE) rpcterms reload_mk reload
 
 auto-reload:
-		$(watch_verbose) \
-		while :; \
-		do \
-			inotifywait -q -e close_write $(RELOAD_MK_WATCH_DIRS) > /dev/null; \
-			make reload; \
-		done;
+	$(watch_verbose) \
+	while :; \
+	do \
+		inotifywait -q -e close_write $(RELOAD_MK_WATCH_DIRS) > /dev/null; \
+		make reload; \
+	done;
