@@ -6,11 +6,11 @@ A live reload plugin for [erlang.mk](https://github.com/ninenines/erlang.mk).
 Usage
 -----
 
-First, add `reload.mk` as a plugin and a dependency:
+First, add `reload.mk` as a plugin and a build dependency:
 
 ```Makefile
 PROJECT = myproject
-DEPS = reload_mk
+BUILD_DEPS = reload_mk
 DEP_PLUGINS = reload_mk
 
 # Until it's accepted into erlang.mk index, we need to point to the repo
@@ -18,8 +18,6 @@ dep_reload_mk = git https://github.com/bullno1/reload.mk master
 
 include erlang.mk
 ```
-
-If you are using an `app.src` file, make sure that `reload_mk` is present in the `applications` list.
 
 Enable `dev_mode` in the release by adding the following line to your `relx.config`:
 
@@ -62,4 +60,4 @@ For example, if you are using `erlydtl` templates, put the following in your `Ma
 RELOAD_MK_WATCH_DIRS = src templates
 ```
 
-By default, it is set to `src`.
+By default, it is set to `src deps`.
