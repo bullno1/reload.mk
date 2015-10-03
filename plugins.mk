@@ -3,12 +3,12 @@ RELOAD_MK_WATCH_DIRS ?= src
 
 # Internal
 
-.PHONY: reload
+.PHONY: reload auto-reload
 
 watch_verbose_0 = @echo " WATCH " $(RELOAD_MK_WATCH_DIRS);
 watch_verbose = $(watch_verbose_$(V))
 
-reload_verbose_0 = @echo " RELOAD " $(PROJECT);
+reload_verbose_0 = @echo " RELOAD" $(PROJECT);
 reload_verbose = $(reload_verbose_$(V))
 
 reload: app
