@@ -21,7 +21,7 @@ auto-reload: bootstrap-reload.mk
 		while :; \
 		do \
 			inotifywait -r -q -e close_write $(RELOAD_MK_WATCH_DIRS) > /dev/null; \
-			make reload; \
+			$(MAKE) reload; \
 		done;
 
 bootstrap-reload.mk:
