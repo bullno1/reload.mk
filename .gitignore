@@ -1,4 +1,7 @@
 *.plt
+relx
+/.test
+/.erlang.mk
 /elvis
 /*.d
 /ebin
