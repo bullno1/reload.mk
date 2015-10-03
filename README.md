@@ -6,12 +6,17 @@ A live reload plugin for [erlang.mk](https://github.com/ninenines/erlang.mk).
 Usage
 -----
 
-First, add `reload.mk` as a plugin:
+First, add `reload.mk` as a plugin and a dependency:
 
 ```Makefile
 PROJECT = myproject
 DEPS = reload_mk
 DEP_PLUGINS = reload_mk
+
+# Until it's accepted into erlang.mk index, we need to point to the repo
+dep_reload_mk = git https://github.com/bullno1/reload.mk master
+
+include erlang.mk
 ```
 
 If you are using an `app.src` file, make sure that `reload_mk` is present in the `applications` list.
@@ -44,6 +49,8 @@ ok
 
 To avoid having to type `make reload` all the time, use `make auto-reload`.
 You need to have `inotify-tools` installed for this command to work.
+
+An example project can be found at https://github.com/bullno1/reload.mk-example.
 
 Configuration
 -------------
