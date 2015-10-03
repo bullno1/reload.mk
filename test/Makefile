@@ -8,6 +8,16 @@ include erlang.mk
 
 RELEASE = _rel/reload_mk_test/bin/reload_mk_test
 
+define assert
+$(verbose) \
+	echo ----------------------------------------------------------------; \
+	VAL=`$(RELEASE) rpcterms $(1)`; \
+	echo $(1) -\> $$VAL; \
+	echo assert\($$VAL $(2) $(3)\); \
+	echo ----------------------------------------------------------------; \
+	[ "$$VAL" $(2) "$(3)" ]
+endef
+
 test: all
 	@echo ----------------------------------------------------------------
 	$(RELEASE) stop || true
@@ -15,7 +25,15 @@ test: all
 	sleep 2
 	$(RELEASE) ping
 
-	[ `$(RELEASE) rpcterms example test` = 0 ]
-	cp ./priv/example.erl ./src/example.erl
+	$(call assert,test1 test,=,0)
+	cp ./priv/test1.erl ./src/test1.erl
 	$(MAKE) reload
-	[ `$(RELEASE) rpcterms example test` = 1 ]
+	$(call assert,test1 test,=,1)
+
+	$(call assert,code is_loaded test2.,=,false)
+	cp ./priv/test2.erl ./src/test2.erl
+	$(MAKE) reload
+	$(call assert,code is_loaded test2.,!=,false)
+	$(call assert,test2 test,=,2)
+
+	$(RELEASE) stop
