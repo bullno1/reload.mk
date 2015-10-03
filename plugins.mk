@@ -1,5 +1,5 @@
 # A list of directories that "make auto-reload" should watch
-RELOAD_MK_WATCH_DIRS ?= src
+RELOAD_MK_WATCH_DIRS ?= src deps
 
 # Internal
 
@@ -20,7 +20,7 @@ auto-reload: bootstrap-reload.mk
 	$(watch_verbose) \
 		while :; \
 		do \
-			inotifywait -q -e close_write $(RELOAD_MK_WATCH_DIRS) > /dev/null; \
+			inotifywait -r -q -e close_write $(RELOAD_MK_WATCH_DIRS) > /dev/null; \
 			make reload; \
 		done;
 
