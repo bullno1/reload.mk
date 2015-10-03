@@ -1,0 +1,58 @@
+reload.mk
+=========
+
+A live reload plugin for [erlang.mk](https://github.com/ninenines/erlang.mk).
+
+Usage
+-----
+
+First, add `reload.mk` as a plugin:
+
+```Makefile
+PROJECT = myproject
+DEPS = reload_mk
+DEP_PLUGINS = reload_mk
+```
+
+If you are using an `app.src` file, make sure that `reload_mk` is present in the `applications` list.
+
+Override your app in the release by adding the following line to your `relx.config`:
+
+```erlang
+{overrides, [{myproject, "."}]}.
+```
+
+Then in one terminal: `make run`.
+Keep it running.
+
+Now you can modify any source files in your project and run `make reload`:
+
+```shell
+% make reload
+ DEPEND myproject.d
+ ERLC   myproject.erl myproject_app.erl
+ APP    myproject
+ RELOAD myproject
+
+=INFO REPORT==== 3-Oct-2015::15:05:18 ===
+    reload_mk: "Reloaded"
+    module: myproject
+    path: "/home/bullno1/Projects/myproject/_rel/myproject_release/lib/myproject-rolling/ebin/myproject.beam"
+** at node myproject@127.0.0.1 **
+ok
+```
+
+To avoid having to type `make reload` all the time, use `make auto-reload`.
+You need to have `inotify-tools` installed for this command to work.
+
+Configuration
+-------------
+
+`RELOAD_MK_WATCH_DIRS` can be set to a list of directories that `make auto-reload` needs to watch.
+For example, if you are using `erlydtl` templates, put the following in your `Makefile`:
+
+```Makefile
+RELOAD_MK_WATCH_DIRS = src templates
+```
+
+By default, it is set to `src`.
