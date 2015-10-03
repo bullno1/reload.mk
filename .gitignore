@@ -1,0 +1,4 @@
+*.plt
+/elvis
+/*.d
+/ebin
