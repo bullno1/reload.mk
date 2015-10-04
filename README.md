@@ -1,6 +1,8 @@
 reload.mk
 =========
 
+![travis-ci](https://travis-ci.org/bullno1/reload.mk.svg?branch=master)
+
 A live reload plugin for [erlang.mk](https://github.com/ninenines/erlang.mk).
 
 Usage
