@@ -3,6 +3,12 @@ RELOAD_MK_WATCH_DIRS ?= src deps
 
 # Internal
 
+help::
+	$(verbose) printf "%s\n" "" \
+		"reload.mk targets:" \
+		"  reload        Reload all recompiled modules" \
+		"  auto-reload   Watch file system for changes and reload automatically" \
+
 .PHONY: reload auto-reload
 
 watch_verbose_0 = @echo " WATCH " $(RELOAD_MK_WATCH_DIRS);
