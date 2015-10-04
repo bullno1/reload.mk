@@ -40,16 +40,14 @@ maybe_reload(Module, Path) ->
 	end.
 
 reload_if_changed(Module, Path, ObjectCode) ->
-	case beam_lib:md5(ObjectCode) of
-		{ok, {_, MD5}} ->
-			case Module:module_info(md5) of
-				MD5 -> ignore;
-				_ ->
-					try_load_module(Module, Path, ObjectCode, true)
-			end;
-		{error, beam_lib, Reason} ->
+	case compare_modules(Module, ObjectCode) of
+		true ->
+			ingore;
+		false ->
+			try_load_module(Module, Path, ObjectCode, true);
+		{error, Msg, Reason} ->
 			error_logger:warning_report([
-				{?MODULE, "Could not get module's checksum"},
+				{?MODULE, Msg},
 				{module, Module},
 				{path, Path},
 				{reason, Reason}
@@ -75,10 +73,41 @@ try_load_module(Module, Path, ObjectCode, IsReload) ->
 					true -> "Could not reload module";
 					false -> "Could not load module"
 				end,
-			error_logger:info_report([
+			error_logger:error_report([
 				{?MODULE, Msg},
 				{module, Module},
 				{path, Path},
 				{reason, Reason}
 			])
 	end.
+
+compare_modules(Module, ObjectCode) ->
+	ModuleInfo = Module:module_info(),
+	case lists:keyfind(md5, 1, ModuleInfo) of
+		{md5, ModuleMD5} -> % Modules in OTP 18.0+ has "md5" in their info
+			compare_md5(ModuleMD5, ObjectCode);
+		false -> % Modules in earlier version do have this info
+			CompileInfo = proplists:get_value(compile, ModuleInfo),
+			compare_compile_info(CompileInfo, ObjectCode)
+	end.
+
+compare_md5(ModuleMD5, ObjectCode) ->
+	case beam_lib:md5(ObjectCode) of
+		{ok, {_, ObjectCodeMD5}} -> ObjectCodeMD5 =:= ModuleMD5;
+		{error, beam_lib, Reason} -> {"Could not get module's md5", Reason}
+	end.
+
+compare_compile_info(ModuleCompileInfo, ObjectCode) ->
+	case beam_lib:chunks(ObjectCode, [compile_info]) of
+		{ok, {_, [{_, ObjectCodeCompileInfo}]}} ->
+			compare(ModuleCompileInfo, ObjectCodeCompileInfo);
+		{error, beam_lib, Reason} ->
+			{"Could not get module's compile info", Reason}
+	end.
+
+compare(Lhs, Rhs) -> normalize(Lhs) =:= normalize(Rhs).
+
+normalize([{_, _} | _] = Item) ->
+	lists:sort([{K, normalize(V)} || {K, V} <- Item]);
+normalize(Item) ->
+	Item.
