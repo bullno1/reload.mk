@@ -2,6 +2,7 @@ language: erlang
 script:
   - make
   - make test
+  - make dialyze
 otp_release:
   - 17.5
   - 18.1
