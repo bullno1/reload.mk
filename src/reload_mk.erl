@@ -94,7 +94,7 @@ compare_modules(Module, ObjectCode) ->
 compare_md5(ModuleMD5, ObjectCode) ->
 	case beam_lib:md5(ObjectCode) of
 		{ok, {_, ObjectCodeMD5}} -> ObjectCodeMD5 =:= ModuleMD5;
-		{error, beam_lib, Reason} -> {"Could not get module's md5", Reason}
+		{error, beam_lib, Reason} -> {"Could not get module's md5", beam_lib, Reason}
 	end.
 
 compare_compile_info(ModuleCompileInfo, ObjectCode) ->
@@ -102,7 +102,7 @@ compare_compile_info(ModuleCompileInfo, ObjectCode) ->
 		{ok, {_, [{_, ObjectCodeCompileInfo}]}} ->
 			compare(ModuleCompileInfo, ObjectCodeCompileInfo);
 		{error, beam_lib, Reason} ->
-			{"Could not get module's compile info", Reason}
+			{"Could not get module's compile info", beam_lib, Reason}
 	end.
 
 compare(Lhs, Rhs) -> normalize(Lhs) =:= normalize(Rhs).
