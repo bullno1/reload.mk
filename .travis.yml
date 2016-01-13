@@ -3,6 +3,7 @@ script:
   - make
   - make test
   - make dialyze
+  - make elvis
 otp_release:
   - 17.5
   - 18.1
