@@ -84,9 +84,9 @@ try_load_module(Module, Path, ObjectCode, IsReload) ->
 compare_modules(Module, ObjectCode) ->
 	ModuleInfo = Module:module_info(),
 	case lists:keyfind(md5, 1, ModuleInfo) of
-		{md5, ModuleMD5} -> % Modules in OTP 18.0+ has "md5" in their info
+		{md5, ModuleMD5} -> % Modules in OTP 18.0+ have "md5" in their info
 			compare_md5(ModuleMD5, ObjectCode);
-		false -> % Modules in earlier version do have this info
+		false -> % Modules in earlier version do not have this info
 			CompileInfo = proplists:get_value(compile, ModuleInfo),
 			compare_compile_info(CompileInfo, ObjectCode)
 	end.
