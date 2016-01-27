@@ -3,6 +3,10 @@ RELOAD_MK_WATCH_DIRS ?= src deps
 
 # Internal
 
+ifeq ($(RELOADABLE),1)
+RELX_OPTS += -d true
+endif
+
 help::
 	$(verbose) printf "%s\n" "" \
 		"reload.mk targets:" \
