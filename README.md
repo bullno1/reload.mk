@@ -49,6 +49,29 @@ You need to have `inotify-tools` installed for this command to work.
 
 An example project can be found at https://github.com/bullno1/reload.mk-example.
 
+Running code on reload
+----------------------
+
+It is possible to have a function called whenever a module is reloaded.
+This is useful for things like reloading cowboy's route.
+To do so, just use the `on_reload` attribute:
+
+```erlang
+-module(my_http_listener).
+-export([reload_routes/0]). % Reload function must be exported
+-on_reload(reload_routes/0).
+
+reload_routes() ->
+	cowboy:set_env(my_http_listener, dispatch, cowboy_router:compile(dispatch())).
+
+dispatch() ->
+	[
+	% Routes
+	].
+```
+
+Now, every time `my_http_listener` is modified, it will automatically calls `reload_routes`.
+
 Configuration
 -------------
 
