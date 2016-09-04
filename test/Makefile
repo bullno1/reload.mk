@@ -36,4 +36,9 @@ test: all
 	$(call assert,code is_loaded test2.,!=,false)
 	$(call assert,test2 test,=,2)
 
+	$(call assert,code is_loaded test3.,!=,false)
+	cp ./priv/test3.erl ./src/test3.erl
+	$(MAKE) reload
+	[ "`cat _rel/reload_mk_test/reloaded`" = "true" ]
+
 	$(RELEASE) stop

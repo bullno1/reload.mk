@@ -66,7 +66,22 @@ try_load_module(Module, Path, ObjectCode, IsReload) ->
 				{?MODULE, Msg},
 				{module, Module},
 				{path, Path}
-			]);
+			]),
+			case IsReload of
+				true ->
+					lists:foreach(
+						fun(ReloadFun) ->
+							error_logger:info_msg(
+								"~p:~p/0 -> ~p~n",
+								[Module, ReloadFun,
+								 catch apply(Module, ReloadFun, [])]
+							)
+						end,
+						reload_funs(Module)
+					);
+				false ->
+					ok
+			end;
 		{error, Reason} ->
 			Msg =
 				case IsReload of
@@ -112,3 +127,9 @@ normalize([{_, _} | _] = Item) ->
 	lists:sort([{K, normalize(V)} || {K, V} <- Item]);
 normalize(Item) ->
 	Item.
+
+reload_funs(Module) ->
+	ReloadFAs = lists:flatten(
+		[FAs || {on_reload, FAs} <- Module:module_info(attributes)]
+	),
+	[Fun || {Fun, 0} <- ReloadFAs].
