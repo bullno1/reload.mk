@@ -18,13 +18,7 @@ DEP_PLUGINS = reload_mk
 include erlang.mk
 ```
 
-Enable `dev_mode` in the release by adding the following line to your `relx.config`:
-
-```erlang
-{dev_mode, true}.
-```
-
-Then in one terminal: `make run`.
+Then in one terminal: `make run RELOADABLE=1`.
 Keep it running.
 
 Now you can modify any source files in your project and run `make reload`:
