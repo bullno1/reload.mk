@@ -7,3 +7,4 @@ script:
 otp_release:
   - 17.5
   - 18.1
+  - 19.2

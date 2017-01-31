@@ -1,6 +1,11 @@
 PROJECT = reload_mk
 PROJECT_DESCRIPTION = Live reload plugin for erlang.mk
 
+BUILD_DEPS = elvis_mk
+DEP_PLUGINS = elvis_mk
+
+dep_elvis_mk = git https://github.com/inaka/elvis.mk.git 1.0.0
+
 include erlang.mk
 
 .PHONY: test
