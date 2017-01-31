@@ -21,7 +21,7 @@ watch_verbose = $(watch_verbose_$(V))
 reload_verbose_0 = @echo " RELOAD" $(PROJECT);
 reload_verbose = $(reload_verbose_$(V))
 
-RELOAD_MK_RPC = $(RELX_OUTPUT_DIR)/$(RELX_RELEASE)/bin/$(RELX_RELEASE) rpcterms
+RELOAD_MK_RPC = $(RELX_OUTPUT_DIR)/$(RELX_REL_NAME)/bin/$(RELX_REL_NAME) rpcterms
 
 reload: deps app bootstrap-reload.mk
 	$(reload_verbose) $(RELOAD_MK_RPC) reload_mk reload
